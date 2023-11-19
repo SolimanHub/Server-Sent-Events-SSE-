@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server-Sent Events Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Server-Sent Events Example</h1>
+    <div id="sse-data"></div>
+
+    <script>
+        const eventSource = new EventSource('backend.php');
+
+        // Manejador de eventos para recibir datos del servidor
+        eventSource.onmessage = function (event) {
+            const dataDiv = document.getElementById('sse-data');
+            dataDiv.innerHTML = event.data;
+        };
+        // Manejador de eventos para manejar la desconexión del servidor
+        eventSource.onerror = function (error) {
+            if (eventSource.readyState == EventSource.CLOSED) {
+                console.log('Conexión cerrada');
+            } else {
+                console.error('Error de conexión:', error);
+            }
+        };
+    </script>
+</body>
+</html>
